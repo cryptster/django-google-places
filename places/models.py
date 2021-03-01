@@ -6,9 +6,9 @@ from typing import Type, TypeVar
 
 from django.conf import settings
 from django.db import models
-
-import googlemaps
 from django_countries.fields import CountryField
+
+from places.clients import cacheable_gmaps
 
 DjModel = TypeVar('DjModel', bound=models.Model)
 
@@ -76,8 +76,7 @@ class Route(AddressComponent):
 class PlaceManager(models.Manager):
 
     def get_details(self, address: str):
-        gmaps = googlemaps.Client(key=settings.GOOGLE_PLACES_API_KEY)
-        candidates = gmaps.find_place(input=address, input_type='textquery')
+        candidates = cacheable_gmaps.find_place(input=address, input_type='textquery')
 
         if candidates['status'] != 'OK':
             return None
@@ -91,7 +90,7 @@ class PlaceManager(models.Manager):
 
         details = {}
         for lang in settings.MODELTRANSLATION_LANGUAGES:
-            details[lang] = gmaps.place(place_id, language=lang)['result']
+            details[lang] = cacheable_gmaps.place(place_id, language=lang)['result']
 
         defaults = {}
         # formatted_address
