@@ -241,10 +241,12 @@ class PlaceManager(models.Manager):
         defaults = {}
         if 'geometry' in details['en']:
             if 'location' in details['en']['geometry']:
-                defaults['latitude'] = details['en']['geometry']['location'][
-                    'lat']
-                defaults['longitude'] = details['en']['geometry']['location'][
-                    'lng']
+                defaults['latitude'] = (
+                    details['en']['geometry']['location']['lat']
+                )
+                defaults['longitude'] = (
+                    details['en']['geometry']['location']['lng']
+                )
         return defaults
 
 

@@ -1,4 +1,4 @@
-from otp.otp_admin import admin_site
+from django.contrib import admin
 
 from .models import (AdministrativeAreaLevel1, AdministrativeAreaLevel2,
                      AdministrativeAreaLevel3, AdministrativeAreaLevel4,
@@ -15,4 +15,4 @@ models_list = (
 )
 
 for model in models_list:
-    admin_site.register(model)
+    admin.site.register(model)
