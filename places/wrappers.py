@@ -12,9 +12,8 @@ class CacheableWrapper:
         attr = getattr(self._client, name)
         is_callable = callable(attr)
 
-
         def handler(*args, **kwargs):
-            cache_key = f'{name}::{args}::{kwargs}'
+            cache_key = f"{name}::{args}::{kwargs}"
             cached_result = cache.get(cache_key)
 
             if cached_result:

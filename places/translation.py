@@ -1,21 +1,30 @@
-from modeltranslation.translator import register, TranslationOptions
+from modeltranslation.translator import TranslationOptions, register
 
 from .models import (
-    Place, AdministrativeAreaLevel1, AdministrativeAreaLevel2,
-    AdministrativeAreaLevel3, AdministrativeAreaLevel4,
-    AdministrativeAreaLevel5, Locality, SubLocalityLevel1, SubLocalityLevel2,
-    SubLocalityLevel3, SubLocalityLevel4, SubLocalityLevel5, Neighborhood,
-    Route
+    AdministrativeAreaLevel1,
+    AdministrativeAreaLevel2,
+    AdministrativeAreaLevel3,
+    AdministrativeAreaLevel4,
+    AdministrativeAreaLevel5,
+    Locality,
+    Neighborhood,
+    Place,
+    Route,
+    SubLocalityLevel1,
+    SubLocalityLevel2,
+    SubLocalityLevel3,
+    SubLocalityLevel4,
+    SubLocalityLevel5,
 )
 
 
 @register(Place)
 class PlaceTranslationOptions(TranslationOptions):
-    fields = ('formatted_address', 'street_number', 'floor', 'room')
+    fields = ("formatted_address", "street_number", "floor", "room")
 
 
 class AddressComponentTranslationOptions(TranslationOptions):
-    fields = ('long_name', 'short_name')
+    fields = ("long_name", "short_name")
 
 
 @register(AdministrativeAreaLevel1)
