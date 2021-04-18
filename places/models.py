@@ -175,7 +175,7 @@ class PlaceManager(models.Manager):
                     kwargs[f"short_name_{lang}"] = item["short_name"]
 
         if kwargs:
-            p, created = model.objects.get_or_create(**kwargs)
+            p, _ = model.objects.get_or_create(**kwargs)
             return p
         return None
 

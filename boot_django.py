@@ -22,6 +22,7 @@ def boot_django():
             }
         },
         INSTALLED_APPS=(
+            "modeltranslation",
             "django.contrib.auth",
             "django.contrib.contenttypes",
             "places",
@@ -32,6 +33,7 @@ def boot_django():
         MODELTRANSLATION_LANGUAGES=("en", "ru", "es"),
         TIME_ZONE="UTC",
         USE_TZ=True,
+        USE_I18N=True,
     )
 
     django.setup()

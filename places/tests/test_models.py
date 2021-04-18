@@ -1,8 +1,9 @@
-from unittest.mock import patch
+from unittest.mock import call, patch
 
+from django.conf import settings
 from django.test import TestCase
 
-from places.models import Place, PlaceManager
+from places.models import AdministrativeAreaLevel1, Place, PlaceManager
 
 
 class PlaceManagerGetDetailsMethodTest(TestCase):
@@ -27,6 +28,115 @@ class PlaceManagerGetDetailsMethodTest(TestCase):
         self.gmaps_mock.find_place.return_value = {"status": "wfe"}
 
         result = Place.objects.get_details("sdqdqwdq")
+
+        self.assertIsNone(result)
+
+    def test_call_get_method_of_manager(self):
+        place_id = "place id"
+        self.gmaps_mock.find_place.return_value = {
+            "status": "OK",
+            "candidates": [{"place_id": place_id}],
+        }
+
+        with patch.object(Place.objects, "get") as get_mock:
+            Place.objects.get_details("sdqdqwdq")
+
+        get_mock.assert_called_once_with(place_id=place_id)
+
+    @patch.object(Place.objects, "get", side_effect=Place.DoesNotExist)
+    def test_handle_DoesNotExist_exception(self, _):
+        self.gmaps_mock.find_place.return_value = {
+            "status": "OK",
+            "candidates": [{"place_id": "place_id"}],
+        }
+
+        Place.objects.get_details("sdqdqwdq")
+
+    @patch.object(Place.objects, "get", side_effect=Place.DoesNotExist)
+    def test_call_gmaps_place(self, _):
+        place_id = "place_id"
+        self.gmaps_mock.find_place.return_value = {
+            "status": "OK",
+            "candidates": [{"place_id": place_id}],
+        }
+
+        Place.objects.get_details("sdqdqwdq")
+
+        calls = [
+            call(place_id, language=lang)
+            for lang in settings.MODELTRANSLATION_LANGUAGES
+        ]
+        self.assertEqual(
+            self.gmaps_mock.place.call_count,
+            len(settings.MODELTRANSLATION_LANGUAGES),
+        )
+        self.gmaps_mock.place.assert_has_calls(calls, any_order=True)
+
+
+class PlaceManagerGetComponentObjectMethodTest(TestCase):
+    def setUp(self):
+        self.details = {
+            "en": {
+                "address_components": [
+                    {
+                        "types": {"administrative_area_level_1"},
+                        "long_name": "CanilloLongEn",
+                        "short_name": "CanilloShortEn",
+                    }
+                ],
+            },
+            "ru": {
+                "address_components": [
+                    {
+                        "types": {"administrative_area_level_1"},
+                        "long_name": "CanilloLongRu",
+                        "short_name": "CanilloShortRu",
+                    }
+                ],
+            },
+            "es": {
+                "address_components": [
+                    {
+                        "types": {"administrative_area_level_1"},
+                        "long_name": "CanilloLongEs",
+                        "short_name": "CanilloShortEs",
+                    }
+                ],
+            },
+        }
+
+    def test_with_empty_details(self):
+        with self.assertRaises(KeyError):
+            PlaceManager.get_component_object(
+                AdministrativeAreaLevel1,
+                "administrative_area_level_1",
+                {},
+            )
+
+    def test_create_related_instance(self):
+        result = PlaceManager.get_component_object(
+            AdministrativeAreaLevel1,
+            "administrative_area_level_1",
+            self.details,
+        )
+
+        self.assertEqual(AdministrativeAreaLevel1.objects.count(), 1)
+        self.assertEqual(result, AdministrativeAreaLevel1.objects.first())
+        self.assertEqual(result.long_name, "CanilloLongEn")
+        self.assertEqual(result.short_name, "CanilloShortEn")
+        self.assertEqual(result.long_name_es, "CanilloLongEs")
+        self.assertEqual(result.short_name_es, "CanilloShortEs")
+        self.assertEqual(result.long_name_en, "CanilloLongEn")
+        self.assertEqual(result.short_name_en, "CanilloShortEn")
+        self.assertEqual(result.long_name_ru, "CanilloLongRu")
+        self.assertEqual(result.short_name_ru, "CanilloShortRu")
+
+    def test_with_key_arg_that_does_not_exist(self):
+        result = PlaceManager.get_component_object(
+            AdministrativeAreaLevel1,
+            "dummy",
+            self.details,
+        )
 
         self.assertIsNone(result)
 
