@@ -206,3 +206,239 @@ class PlaceManagerGetCountryCodeMethodTest(TestCase):
 
         with self.assertRaises(StopIteration):
             PlaceManager.get_country_code(details)
+
+
+class PlaceManagerGetStreetNumberMethodTest(TestCase):
+    def test_with_empty_details(self):
+        with self.assertRaises(KeyError):
+            PlaceManager.get_street_number({})
+
+    def test(self):
+        details = {
+            "en": {"address_components": [{
+                        "long_name": "long_street",
+                        "short_name": "short_street",
+                        "types": ["street_number"]
+                    }]},
+            "ru": {"address_components": [{
+                        "long_name": "long_street",
+                        "short_name": "short_street",
+                        "types": ["street_number"]
+                    }]},
+            "es": {"address_components": [{
+                        "long_name": "long_street",
+                        "short_name": "short_street",
+                        "types": ["street_number"]
+                    }]}
+        }
+        expected_result = {'street_number_en': 'long_street',
+                           'street_number_ru': 'long_street',
+                           'street_number_es': 'long_street'}
+
+        result = PlaceManager.get_street_number(details)
+
+        self.assertEqual(result, expected_result)
+
+    def test_without_street_number(self):
+        details = {
+            "en": {"address_components": [{
+                "long_name": "long_street",
+                "short_name": "short_street",
+                "types": ["route"]
+            }]},
+            "ru": {"address_components": [{
+                "long_name": "long_street",
+                "short_name": "short_street",
+                "types": ["route"]
+            }]},
+            "es": {"address_components": [{
+                "long_name": "long_street",
+                "short_name": "short_street",
+                "types": ["route"]
+            }]}
+        }
+        result = PlaceManager.get_street_number(details)
+
+        self.assertEqual(result, {})
+
+
+class PlaceManagerGetFloorMethodTest(TestCase):
+
+    def test_with_empty_details(self):
+        with self.assertRaises(KeyError):
+            PlaceManager.get_floor({})
+
+    def test(self):
+        details = {
+            "en": {"address_components": [{
+                        "long_name": "long_floor",
+                        "short_name": "short_floor",
+                        "types": ["floor"]
+                    }]},
+            "ru": {"address_components": [{
+                        "long_name": "long_floor",
+                        "short_name": "short_floor",
+                        "types": ["floor"]
+                    }]},
+            "es": {"address_components": [{
+                        "long_name": "long_floor",
+                        "short_name": "short_floor",
+                        "types": ["floor"]
+                    }]}
+        }
+        expected_result = {'floor_en': 'long_floor',
+                           'floor_ru': 'long_floor',
+                           'floor_es': 'long_floor'}
+
+        result = PlaceManager.get_floor(details)
+
+        self.assertEqual(result, expected_result)
+
+    def test_without_street_number(self):
+        details = {
+            "en": {"address_components": [{
+                "long_name": "long_floor",
+                "short_name": "short_floor",
+                "types": ["route"]
+            }]},
+            "ru": {"address_components": [{
+                "long_name": "long_floor",
+                "short_name": "short_floor",
+                "types": ["route"]
+            }]},
+            "es": {"address_components": [{
+                "long_name": "long_floor",
+                "short_name": "short_floor",
+                "types": ["route"]
+            }]}
+        }
+        result = PlaceManager.get_floor(details)
+
+        self.assertEqual(result, {})
+
+
+class PlaceManagerGetRoomMethodTest(TestCase):
+
+    def test_with_empty_details(self):
+        with self.assertRaises(KeyError):
+            PlaceManager.get_room({})
+
+    def test(self):
+        details = {
+            "en": {"address_components": [{
+                "long_name": "long_room",
+                "short_name": "short_room",
+                "types": ["room"]
+            }]},
+            "ru": {"address_components": [{
+                "long_name": "long_room",
+                "short_name": "short_room",
+                "types": ["room"]
+            }]},
+            "es": {"address_components": [{
+                "long_name": "long_room",
+                "short_name": "short_room",
+                "types": ["room"]
+            }]}
+        }
+        expected_result = {'room_en': 'long_room',
+                           'room_ru': 'long_room',
+                           'room_es': 'long_room'}
+
+        result = PlaceManager.get_room(details)
+
+        self.assertEqual(result, expected_result)
+
+    def test_without_street_number(self):
+        details = {
+            "en": {"address_components": [{
+                "long_name": "long_room",
+                "short_name": "short_room",
+                "types": ["route"]
+            }]},
+            "ru": {"address_components": [{
+                "long_name": "long_room",
+                "short_name": "short_room",
+                "types": ["route"]
+            }]},
+            "es": {"address_components": [{
+                "long_name": "long_room",
+                "short_name": "short_room",
+                "types": ["route"]
+            }]}
+        }
+        result = PlaceManager.get_room(details)
+
+        self.assertEqual(result, {})
+
+
+class PlaceManagerGetPostalCodeMethodTest(TestCase):
+
+    def test_with_empty_details(self):
+        with self.assertRaises(KeyError):
+            PlaceManager.get_room({})
+
+    def test(self):
+        details = {
+            "en": {"address_components": [{
+                "long_name": "long_postal_code",
+                "short_name": "short_postal_code",
+                "types": ["postal_code"]
+            }]},
+        }
+        expected_result = "long_postal_code"
+
+        result = PlaceManager.get_postal_code(details)
+
+        self.assertEqual(result, expected_result)
+
+    def test_without_street_number(self):
+        details = {
+            "en": {"address_components": [{
+                "long_name": "long_postal_code",
+                "short_name": "short_postal_code",
+                "types": ["route"]
+            }]},
+        }
+        result = PlaceManager.get_postal_code(details)
+
+        self.assertEqual(result, "")
+
+
+class PlaceManagerGetLatlngMethodTest(TestCase):
+
+    def test_with_empty_details(self):
+        with self.assertRaises(KeyError):
+            PlaceManager.get_lat_lng({})
+
+    def test(self):
+        details = {
+            "en":
+                {'geometry': {
+                    'location': {
+                        'lat': 49.9810156,
+                        'lng': 8.0739617},
+                    'viewport': {
+                        'northeast': {
+                            'lat': 49.9823942302915,
+                            'lng': 8.075293780291501},
+                        'southwest': {
+                            'lat': 49.9796962697085,
+                            'lng': 8.072595819708498}
+                    }
+                }}
+        }
+        expected_result = {'latitude': 49.9810156, 'longitude': 8.0739617}
+
+        result = PlaceManager.get_lat_lng(details)
+
+        self.assertEqual(result, expected_result)
+
+    def test_without_street_number(self):
+        details = {"en": {
+            'formatted_address': 'New York, USA',
+            'formatted_phone_number': '06132 5099968'}}
+
+        result = PlaceManager.get_lat_lng(details)
+
+        self.assertEqual(result, {})
