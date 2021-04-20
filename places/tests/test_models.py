@@ -257,13 +257,13 @@ class PlaceManagerGetStreetNumberMethodTest(TestCase):
                 "types": ["route"]
             }]}
         }
+
         result = PlaceManager.get_street_number(details)
 
         self.assertEqual(result, {})
 
 
 class PlaceManagerGetFloorMethodTest(TestCase):
-
     def test_with_empty_details(self):
         with self.assertRaises(KeyError):
             PlaceManager.get_floor({})
@@ -294,7 +294,7 @@ class PlaceManagerGetFloorMethodTest(TestCase):
 
         self.assertEqual(result, expected_result)
 
-    def test_without_street_number(self):
+    def test_without_floor(self):
         details = {
             "en": {"address_components": [{
                 "long_name": "long_floor",
@@ -312,13 +312,13 @@ class PlaceManagerGetFloorMethodTest(TestCase):
                 "types": ["route"]
             }]}
         }
+
         result = PlaceManager.get_floor(details)
 
         self.assertEqual(result, {})
 
 
 class PlaceManagerGetRoomMethodTest(TestCase):
-
     def test_with_empty_details(self):
         with self.assertRaises(KeyError):
             PlaceManager.get_room({})
@@ -349,7 +349,7 @@ class PlaceManagerGetRoomMethodTest(TestCase):
 
         self.assertEqual(result, expected_result)
 
-    def test_without_street_number(self):
+    def test_without_room(self):
         details = {
             "en": {"address_components": [{
                 "long_name": "long_room",
@@ -367,13 +367,13 @@ class PlaceManagerGetRoomMethodTest(TestCase):
                 "types": ["route"]
             }]}
         }
+
         result = PlaceManager.get_room(details)
 
         self.assertEqual(result, {})
 
 
 class PlaceManagerGetPostalCodeMethodTest(TestCase):
-
     def test_with_empty_details(self):
         with self.assertRaises(KeyError):
             PlaceManager.get_room({})
@@ -392,7 +392,7 @@ class PlaceManagerGetPostalCodeMethodTest(TestCase):
 
         self.assertEqual(result, expected_result)
 
-    def test_without_street_number(self):
+    def test_without_postal_code(self):
         details = {
             "en": {"address_components": [{
                 "long_name": "long_postal_code",
@@ -400,13 +400,13 @@ class PlaceManagerGetPostalCodeMethodTest(TestCase):
                 "types": ["route"]
             }]},
         }
+
         result = PlaceManager.get_postal_code(details)
 
         self.assertEqual(result, "")
 
 
 class PlaceManagerGetLatlngMethodTest(TestCase):
-
     def test_with_empty_details(self):
         with self.assertRaises(KeyError):
             PlaceManager.get_lat_lng({})
@@ -434,7 +434,7 @@ class PlaceManagerGetLatlngMethodTest(TestCase):
 
         self.assertEqual(result, expected_result)
 
-    def test_without_street_number(self):
+    def test_without_location(self):
         details = {"en": {
             'formatted_address': 'New York, USA',
             'formatted_phone_number': '06132 5099968'}}
