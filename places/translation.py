@@ -1,8 +1,4 @@
-try:
-    from modeltranslation.translator import TranslationOptions, register
-except ModuleNotFoundError:
-    from django.contrib.admin import register, ModelAdmin as TranslationOptions
-
+from modeltranslation.translator import TranslationOptions, register
 
 from .models import (
     AdministrativeAreaLevel1,
