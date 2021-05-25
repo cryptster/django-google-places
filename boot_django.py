@@ -30,6 +30,7 @@ def boot_django():
         ),
         GOOGLE_PLACES_API_KEY="AIzaDummyKey",
         CACHING_TIME=60 * 60 * 24,
+        GOOGLE_PLACES_WRAPPER_CACHE_NAME="default",
         MODELTRANSLATION_LANGUAGES=("en", "ru", "es"),
         TIME_ZONE="UTC",
         USE_TZ=True,

@@ -6,9 +6,12 @@ from typing import Type, TypeVar
 
 from django.conf import settings
 from django.db import models
-from django_countries.fields import CountryField
 
 from places.clients import cacheable_gmaps
+try:
+    from django_countries.fields import CountryField
+except ModuleNotFoundError:
+    from django.db.models import TextField as CountryField
 
 DjModel = TypeVar("DjModel", bound=models.Model)
 
