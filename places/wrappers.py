@@ -5,13 +5,9 @@ from django.core.cache import caches
 
 
 class CacheableWrapper:
-    def __init__(self, client, cache_name='default'):
-        """
-        :param client : instance googlemaps Client.
-        :param cache_name : keys for caches.
-        """
+    def __init__(self, client):
         self._client = client
-        self.cache = caches[cache_name]
+        self.cache = caches[settings.GOOGLE_PLACES_WRAPPER_CACHE_NAME]
 
     def __getattr__(self, name):
         attr = getattr(self._client, name)
