@@ -7,7 +7,7 @@ from django.core.cache import caches
 class CacheableWrapper:
     def __init__(self, client):
         self._client = client
-        self.cache = caches[settings.GOOGLE_PLACES_WRAPPER_CACHE_NAME]
+        self._cache = caches[settings.GOOGLE_PLACES_WRAPPER_CACHE_NAME]
 
     def __getattr__(self, name):
         attr = getattr(self._client, name)
@@ -15,7 +15,7 @@ class CacheableWrapper:
 
         def handler(*args, **kwargs):
             cache_key = f"{name}::{args}::{kwargs}"
-            cached_result = self.cache.get(cache_key)
+            cached_result = self._cache.get(cache_key)
 
             if cached_result:
                 result = pickle.loads(cached_result)
@@ -24,7 +24,9 @@ class CacheableWrapper:
                 if is_callable:
                     result = result(*args, **kwargs)
                     pickled_object = pickle.dumps(result)
-                    self.cache.set(cache_key, pickled_object, settings.CACHING_TIME)
+                    self._cache.set(
+                        cache_key, pickled_object, settings.CACHING_TIME
+                    )
 
             return result
 

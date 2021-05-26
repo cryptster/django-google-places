@@ -8,6 +8,7 @@ from django.conf import settings
 from django.db import models
 
 from places.clients import cacheable_gmaps
+
 try:
     from django_countries.fields import CountryField
 except ModuleNotFoundError:
