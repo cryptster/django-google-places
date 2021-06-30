@@ -46,7 +46,9 @@ class AdministrativeAreaLevel5(AddressComponent):
 
 
 class Locality(AddressComponent):
-    pass
+    class Meta:
+        verbose_name = "locality"
+        verbose_name_plural = "localities"
 
 
 class SubLocalityLevel1(AddressComponent):
